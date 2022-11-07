@@ -1,14 +1,12 @@
 from typing import Iterable
 from kedro.pipeline import node, pipeline
 from kedro.runner import SequentialRunner
+from kedro.io import DataCatalog, MemoryDataSet
 
 
-def mean(x: Iterable[float], n: int) -> float:
-    return sum(x) / n
+runner = SequentialRunner()
+data_catalog = DataCatalog(feed_dict={"x": [1, 2, 3]})
 
+calculated_mean = runner.run(pipeline=variance_pipeline, catalog=data_catalog)
 
-variance_pipeline = pipeline([
-    node(func=mean, inputs=["x", "n"], outputs="mean")
-])
-
-
+print(calculated_mean)
